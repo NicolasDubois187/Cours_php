@@ -1,10 +1,10 @@
 <?php 
 session_start();
 
-if (!isset($_SESSION['isAdmin'])) {
-	header("Location: index.php?error_code=1");
-	exit;
-}
+require_once("../../helper.php");
+
+redirectIfNotAdmin();
+
 ?>
 <html>
 	<head>

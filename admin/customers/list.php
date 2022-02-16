@@ -1,10 +1,12 @@
 <?php 
 session_start();
 
-if (!isset($_SESSION['isAdmin'])) {
-	header("Location: index.php?error_code=1");
-	exit;
-}
+require_once("../../helper.php");
+
+redirectIfNotAdmin();
+
+$customers = getCustomersFromDB();
+
 ?>
 <html>
 	<head>
@@ -24,6 +26,8 @@ if (!isset($_SESSION['isAdmin'])) {
 				<th>Email</th>
 				<th>Action</th>
 			</tr>
+			
+			//boucle
 			<tr>
 				<td>Yann</td>
 				<td>Serinet</td>
@@ -34,6 +38,7 @@ if (!isset($_SESSION['isAdmin'])) {
 					<a href="customers/delete.php">Supprimer</a>
 				</td>
 			</tr>
+			//fin de boucle
 		</table>
 	</body>
 </html>

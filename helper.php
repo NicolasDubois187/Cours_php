@@ -174,3 +174,11 @@ function getPriceFromNbPlayer($nb_player): int {
  
  return $price * $nb_player;
 }
+
+function redirectIfNotAdmin()
+{
+	if (!isset($_SESSION['isAdmin'])) {
+		header("Location: /escape-game/admin/index.php?error_code=1");
+		exit;
+	}
+}

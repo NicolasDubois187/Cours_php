@@ -42,8 +42,8 @@ function getRoomsFromDB(): array
 			$row['img_css'],
 			(bool)$row['new'],
 		);
-
-		$array_rooms[$row['id']] = $room->toArray();
+		$room->setId((int)$row['id']);
+		$array_rooms[$row['id']] = $room;
 		//array_push($array_rooms, $room->toArray());
 	}
 	return $array_rooms;
@@ -111,6 +111,31 @@ function getCustomersById(int $customer_id): ?Customer
 		return null;
 	}
 }
+function getRoomsById(int $room_id): ?Room
+{
+	$conn = connect_to_mysql();
+	$query = $conn->prepare("SELECT * FROM `rooms` WHERE rooms.id = :room_id");
+
+	$query->execute([':room_id' => $room_id]);
+	if ($row = $query->fetch()) {
+		$room = new Room(
+			$row['name'],
+			$row['description'],
+			(int)$row['duration'],
+			(bool)$row['forbidden18yearOld'],
+			$row['niveau'],
+			(int)$row['min_player'],
+			(int)$row['max_player'],
+			(int)$row['age'],
+			$row['img_css'],
+			(bool)$row['new'],
+		);
+		$room->setId((int)$row['id']);
+		return $room;
+	} else {
+		return null;
+	}
+}
 function getBookingsByCustomer($customer_id)
 {
 
@@ -120,6 +145,33 @@ function getBookingsByCustomer($customer_id)
 	$sql = "SELECT *
 	        FROM `booking`
 			WHERE customer_id = $customer_id
+			";
+
+	foreach ($conn->query($sql) as $row) {
+
+		$booking = new Booking(
+			(int)$row['room_id'],
+			(int)$row['customer_id'],
+			(int)$row['schedule_id'],
+			$row['date'],
+			(int)$row['nb_player'],
+			(int)$row['total_price'],
+
+		);
+		$booking->setId((int)$row['id']);
+		$array_bookings[$row['id']] = $booking;
+	}
+	return $array_bookings;
+}
+function getBookingsByRoomId($room_id)
+{
+
+	$conn = connect_to_mysql();
+
+	$array_bookings = [];
+	$sql = "SELECT *
+	        FROM `booking`
+			WHERE room_id = $room_id
 			";
 
 	foreach ($conn->query($sql) as $row) {

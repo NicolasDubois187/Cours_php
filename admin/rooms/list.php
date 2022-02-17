@@ -40,15 +40,16 @@ $rooms = getRoomsFromDB();
 		foreach ($rooms as $room_key => $room_info) {
 		?>
 			<tr>
-				<td><?= $room_info['name'] ?></td>
-				<td><?= $room_info['description'] ?></td>
-				<td><?= $room_info['duration'] ?></td>
-				<td><?= $room_info['forbidden18yearOld'] ?></td>
-				<td><?= $room_info['niveau'] ?></td>
-				<td><?= $room_info['min_player'] ?></td>
-				<td><?= $room_info['max_player'] ?></td>
-				<td><?= $room_info['age'] ?></td>
-				<td><?= $new = ($room_info['new'] ? 'Nouveauté' : '') ?>></td>
+
+				<td><?= $room_info->getName(); ?></td>
+				<td><?= $room_info->getDescription(); ?></td>
+				<td><?= $room_info->getDuration(); ?></td>
+				<!-- <td> $room_info->'forbidden18yearOld' </td> -->
+				<td><?= $room_info->getNiveau(); ?></td>
+				<td><?= $room_info->getMinPlayer(); ?></td>
+				<td><?= $room_info->getMaxPlayer(); ?></td>
+				<td><?= $room_info->getAge(); ?></td>
+
 
 
 				<td>
@@ -63,5 +64,6 @@ $rooms = getRoomsFromDB();
 		//fin de boucle
 	</table>
 </body>
+
 
 </html>

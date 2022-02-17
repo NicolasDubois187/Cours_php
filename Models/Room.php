@@ -17,6 +17,7 @@ class Room
 	private bool $new;
 
 	public function __construct(
+
 		string $p_name,
 		string $p_description,
 		int $p_duration = 60,
@@ -39,7 +40,10 @@ class Room
 		$this->img_css = $p_img_css;
 		$this->new = $p_new;
 	}
-
+	public function setId(int $value): void
+	{
+		$this->id = $value;
+	}
 	public function getName(): string
 	{
 		return ucfirst(strtolower($this->name));
@@ -62,6 +66,7 @@ class Room
 	{
 		return $this->duration;
 	}
+
 
 	public function getMinPlayer(): int
 	{
@@ -129,13 +134,40 @@ class Room
 		];
 	}
 
-	public function insert()
+	public function insert(): ?int
 	{
-		$sql = "INSERT INTO `rooms` (`name`, `description`, `duration`, `forbidden18yearOld`, `niveau`, `min_player`, `max_player`) 
-                 VALUES             ('" . $this->name . "', 'sddfsdf', '60',          '0',              'Normal',       '2',       '12');";
+		$conn = connect_to_mysql();
 
-		echo $sql;
+		$query = $conn->prepare('INSERT INTO rooms (name, description, duration, forbidden18yearOld, niveau, min_player, max_player, age, img_css, new) 
+					VALUES (:name, :description, :duration, :forbidden18yearOld, :niveau, :min_player, :max_player, :age, :img_css, :new);');
+		$result = $query->execute([
+			':name' 				=> $this->name,
+			':description'  		=> $this->description,
+			':duration'     		=> $this->duration,
+			':forbidden18yearOld'   => $this->forbidden18yearOld,
+			':niveau'     			=> $this->niveau,
+			':min_player'     		=> $this->min_player,
+			':max_player'     		=> $this->max_player,
+			':age'     				=> $this->age,
+			':img_css'     			=> $this->img_css,
+			':new'     				=> $this->new,
+
+		]);
+		if ($result) {
+			$this->id = (int)$conn->lastInsertId();
+			return $this->id;
+		} else {
+			return null;
+		}
 	}
+
+	// public function insert()
+	// {
+	// 	$sql = "INSERT INTO `rooms` (`name`, `description`, `duration`, `forbidden18yearOld`, `niveau`, `min_player`, `max_player`) 
+	//              VALUES             ('" . $this->name . "', 'sddfsdf', '60',          '0',              'Normal',       '2',       '12');";
+
+	// 	echo $sql;
+	// }
 	public function getCSSTemplate()
 	{
 	}

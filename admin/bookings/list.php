@@ -12,15 +12,16 @@ require_once("../../Models/Schedule.php");
 
 redirectIfNotAdmin();
 
-// $room_id = (int)($_GET['room_id'] ?? 0);
-// $bookings = ($customer_id == 0) ? getBookingsFromDB() :
-// 	getBookingsByCustomer($customer_id);
-
 $customer_id = (int)($_GET['customer_id'] ?? 0);
-$bookings = ($customer_id == 0) ? getBookingsFromDB() :
+$booking = ($customer_id == 0) ? getBookingsFromDB() :
 	getBookingsByCustomer($customer_id);
+
+$room_id = (int)($_GET['room_id'] ?? 0);
+$bookings = ($room_id == 0) ? getBookingsFromDB() :
+	getBookingsByRoomId($room_id);
 // var_dump($bookings);
 // die;
+
 ?>
 <html>
 
@@ -46,7 +47,7 @@ $bookings = ($customer_id == 0) ? getBookingsFromDB() :
 			<th>Heure</th>
 			<th>Nb joueurs</th>
 			<th>Montant</th>
-			<th>liens</th>
+			<th>Actions</th>
 		</tr>
 
 		//boucle
@@ -65,7 +66,6 @@ $bookings = ($customer_id == 0) ? getBookingsFromDB() :
 
 				<td>
 
-					<a href="customers/bookings.php">Voir les réservations</a>
 					<a href="customers/update.php">Modifier</a>
 					<a href="customers/delete.php">Supprimer</a>
 				</td>

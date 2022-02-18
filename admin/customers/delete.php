@@ -1,32 +1,40 @@
 <?php
 session_start();
-
 require_once("../../helper.php");
 require_once("../../Models/Customer.php");
 require_once("../../Models/Booking.php");
 
 $customer_id = (int)$_GET['customer_id'];
-
-$bookings_array = getBookingsByCustomer($customer_id);
-var_dump($bookings_array);
-
-
-
+// $bookingsOfThisCustomer = getBookingsByCustomer($customer_id);
+// var_dump($bookingsOfThisCustomer);
+// die;
+$customer = getCustomersById($customer_id);
+// $customerCompleteName = '' . $customer->getFirstname() . ' ' . $customer->getLastname() . '';
+// $hasBookings = (empty($bookingsOfThisCustomer)) ? false : true;
 ?>
 
-<script type="text/javascript">
-    function testConfirmDialog() {
+<!DOCTYPE html>
+<html lang="en">
 
-        var result = confirm("Attention, cet utilisateur a des réservations. Voulez-vous le supprimer?");
-        if (result) {
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suppression</title>
+</head>
 
-            alert("fonction delete customer");
+<body>
 
-        } else {
+  <h1>Suppression d'utilisateur</h1>
 
-            alert("Annuler");
+  <?php
+  include('../includes/menu.php');
+  ?>
 
-        }
-    }
-    testConfirmDialog();
-</script>
+</body>
+
+</html>
+
+
+
+<?php $customer->delete(); ?>

@@ -61,6 +61,14 @@ class Room
 	{
 		return $this->niveau;
 	}
+	public function getForbidden18YearOld(): bool
+	{
+		return $this->forbidden18yearOld;
+	}
+	public function getNew(): bool
+	{
+		return $this->new;
+	}
 
 	public function getDuration(): int
 	{

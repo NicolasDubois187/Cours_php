@@ -91,4 +91,19 @@ class Customer
 
     return $result;
   }
+  public function delete(): bool
+  {
+    $conn = connect_to_mysql();
+
+    $query = $conn->prepare(
+      "DELETE FROM `customers` WHERE `customers`.`id` = :id;"
+    );
+
+    $result = $query->execute([
+      ':id' => $this->id,
+
+    ]);
+
+    return $result;
+  }
 }

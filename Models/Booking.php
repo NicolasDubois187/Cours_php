@@ -52,6 +52,10 @@ class Booking
   {
     $this->id = $value;
   }
+  public function getId(): int
+  {
+    return $this->id;
+  }
   public function getRoomId(): int
   {
     return $this->room_id;
@@ -64,16 +68,53 @@ class Booking
   {
     return $this->date;
   }
+  public function setDate(string $date)
+  {
+    $this->date = $date;
+  }
   public function getSchedule_id(): int
   {
     return $this->schedule_id;
+  }
+  public function setScheduleId(int $schedule_id)
+  {
+    $this->schedule_id = $schedule_id;
   }
   public function getNbPlayer(): int
   {
     return $this->nb_player;
   }
+  public function setNbPlayer(int $nb_player)
+  {
+    $this->nb_player = $nb_player;
+  }
   public function getTotalPrice(): int
   {
     return $this->total_price;
+  }
+  public function setTotalPrice(int $total_price)
+  {
+    $this->total_price = $total_price;
+  }
+  public function update(): bool
+  {
+    $conn = connect_to_mysql();
+
+    $query = $conn->prepare(
+      "UPDATE `booking` SET `schedule_id` = :schedule_id, `date` = :date, `nb_player` = :nb_player, `total_price` = :total_price WHERE `booking`.`id` = :booking_id;"
+    );
+
+    $result = $query->execute([
+      ':schedule_id'     => $this->schedule_id,
+      ':date'  => $this->date,
+      ':nb_player'  => $this->nb_player,
+      ':total_price'  => $this->total_price,
+      ':booking_id'  => $this->id,
+
+
+
+    ]);
+
+    return $result;
   }
 }

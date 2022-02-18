@@ -13,12 +13,15 @@ require_once("../../Models/Schedule.php");
 redirectIfNotAdmin();
 
 $customer_id = (int)($_GET['customer_id'] ?? 0);
-$booking = ($customer_id == 0) ? getBookingsFromDB() :
-	getBookingsByCustomer($customer_id);
-
 $room_id = (int)($_GET['room_id'] ?? 0);
-$bookings = ($room_id == 0) ? getBookingsFromDB() :
-	getBookingsByRoomId($room_id);
+if ($customer_id != 0) {
+	$bookings = getBookingsByCustomer($customer_id);
+} else if ($room_id != 0) {
+	$bookings = getBookingsByRoomId($room_id);
+} else {
+	$bookings = getBookingsFromDB();
+}
+
 // var_dump($bookings);
 // die;
 
@@ -66,7 +69,7 @@ $bookings = ($room_id == 0) ? getBookingsFromDB() :
 
 				<td>
 
-					<a href="customers/update.php">Modifier</a>
+					<a href="../bookings/update.php?booking_id=<?= $booking_info->getId(); ?>">Modifier</a>
 					<a href="customers/delete.php">Supprimer</a>
 				</td>
 			</tr>
